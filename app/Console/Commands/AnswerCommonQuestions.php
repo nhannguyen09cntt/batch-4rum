@@ -69,9 +69,10 @@ class AnswerCommonQuestions extends Command
         }
         $title = $topic['title'];
         $answer = '';
+        $topic_data = ['title' => $topic['title'], 'url' => "https://4rum.vn/t/" . $topic['slug'] . "/" . $topic['id']];
 
         $answerRes = $this->botAnswerClient->request('POST', 'http://localhost:8080', [
-            'body' => $title,
+            'body' => json_encode($topic_data),
         ]);
         $stringBody = (string) $answerRes->getBody();
 
