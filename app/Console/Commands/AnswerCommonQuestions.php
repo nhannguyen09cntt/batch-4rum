@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 
 class AnswerCommonQuestions extends Command
 {
-    const PAGE_LIMIT = 2;
+    const PAGE_LIMIT = 100;
 
     /**
      * The name and signature of the console command.
@@ -57,7 +57,13 @@ class AnswerCommonQuestions extends Command
             $topics = $body['topic_list']['topics'];
 
             foreach ($topics as $topic) {
-                $this->sendAnswer($topic);
+                try {
+                    $this->sendAnswer($topic);
+                } catch (\Exception $e) {
+                    echo 'Caught exception: ', $e->getMessage(), "\n";
+                    continue;
+                }
+
             }
         }
     }
@@ -76,9 +82,6 @@ class AnswerCommonQuestions extends Command
         ]);
         $stringBody = (string) $answerRes->getBody();
 
-        echo "Question: " . $title;
-        echo "\n";
-        echo "Answer: ";
-        var_dump($stringBody);
+        echo "Question: " . $title . "\n";
     }
 }
